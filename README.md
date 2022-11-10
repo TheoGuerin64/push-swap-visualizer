@@ -1,7 +1,7 @@
 # Push swap visualizer
 *Inspired by [Hydral](https://gitlab.com/hydrasho)'s amazing [Visualizer push-swap](https://gitlab.com/hydrasho/visualizer-push-swap)*
 
-Visualize the execution of your sorting algorithm.<br/>
+Visualize the execution of your push swap algorithm (for 42 push swap project).<br/>
 ![preview](https://user-images.githubusercontent.com/57496441/200985917-66101aa0-c25f-423b-9e3d-cf407f2e3de4.gif)
 
 ## Usage
