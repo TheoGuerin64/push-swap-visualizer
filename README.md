@@ -12,4 +12,4 @@ Visualize the execution of your sorting algorithm.<br/>
 
 More details about arguments at ```visualizer -h```
 
-![image](https://user-images.githubusercontent.com/57496441/200988011-cc9f1c7d-8254-465b-90c4-997e099eb6d4.png)
+![image](https://user-images.githubusercontent.com/57496441/200988833-2a2b0e87-d77f-4a3b-8547-92d46c24a1c9.png)
