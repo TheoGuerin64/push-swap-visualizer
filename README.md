@@ -5,4 +5,11 @@ Visualize the execution of your sorting algorithm.<br/>
 ![preview](https://user-images.githubusercontent.com/57496441/200985917-66101aa0-c25f-423b-9e3d-cf407f2e3de4.gif)
 
 ## Usage
-![image](https://user-images.githubusercontent.com/57496441/200986193-e16920f5-1f77-4548-93a7-48ce6fe975ab.png)
+- Go to next to your push swap folder
+- ```git clone https://github.com/TheoGuerin64/push-swap-visualizer```
+- cd push-swap-visualizer
+- ```./visualizer <size>```
+
+More details about the parameters at ```visualizer -h```
+
+![image](https://user-images.githubusercontent.com/57496441/200988011-cc9f1c7d-8254-465b-90c4-997e099eb6d4.png)
