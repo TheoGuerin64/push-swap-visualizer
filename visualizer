@@ -23,7 +23,7 @@ def size_type(x: str) -> int:
 
 def init_argparse() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description="Show push swap with bars."
+        description="Visualize the execution of your sorting algorithm."
     )
     parser.add_argument("size", type=size_type, action="store",
         help="number of generated number (must be greater than 0)."
