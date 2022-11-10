@@ -1,0 +1,160 @@
+#!/usr/bin/python3
+from typing import List, Optional
+import subprocess
+import argparse
+import random
+import math
+import cairo
+import gi
+
+gi.require_version("Gtk", "3.0")
+from gi.repository import Gtk, GLib
+
+
+def size_type(x: str) -> int:
+    try:
+        x = int(x)
+    except ValueError as e:
+        raise argparse.ArgumentTypeError(f"invalid int value: '{x}'") from e
+    if x < 1:
+        raise argparse.ArgumentTypeError("SIZE must be greater than 0")
+    return x
+
+
+def init_argparse() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        description="Show push swap with bars."
+    )
+    parser.add_argument("size", type=size_type, action="store",
+        help="number of generated number (must be greater than 0)."
+    )
+    parser.add_argument("-p", "--path", type=str, action="store",
+        default="../push_swap",
+        help="path to push swap folder (default is ../push_swap)."
+    )
+    return parser
+
+
+class PushSwapVisualizer(Gtk.Window):
+    SEP_HEIGHT = 4
+
+    def __init__(self, stack_a: List[int]) -> None:
+        super().__init__(title="Push swap visualizer")
+        self.stacks_size = len(stack_a)
+        self.stack_a = stack_a
+        self.stack_b = []
+
+        self.connect("destroy", Gtk.main_quit)
+
+        self.layout = Gtk.Box(spacing=6)
+        self.add(self.layout)
+
+        self.canvas = Gtk.DrawingArea()
+        self.canvas.connect("draw", self.draw_ps)
+        self.layout.pack_start(self.canvas, True, True, 0)
+
+    def draw_ps(self, area: Gtk.DrawingArea, context: cairo.Context) -> None:
+        wsize = self.get_size()
+
+        context.set_source_rgb(0.6, 0.6, 0.6)
+        context.fill()
+        context.paint()
+
+        for i, v in enumerate(self.stack_a):
+            v_percent = (v + 2147483648) / 4294967296
+            height = wsize.height / 2 / self.stacks_size
+
+            context.set_source_rgb(v_percent, 0, 0)
+            context.rectangle(
+                0, i * height,
+                v_percent * wsize.width, height
+            )
+            context.fill()
+
+        # Draw Separation line
+        context.set_source_rgb(0.3, 0.3, 0.3)
+        context.rectangle(
+            0, wsize.height / 2,
+            wsize.width, self.SEP_HEIGHT
+        )
+        context.fill()
+
+        for i, v in enumerate(self.stack_b):
+            v_percent = (v + 2147483648) / 4294967296
+            height = wsize.height / 2 / self.stacks_size
+
+            context.set_source_rgb(v_percent, 0, 0)
+            context.rectangle(
+                0, wsize.height / 2 + self.SEP_HEIGHT + i * height,
+                v_percent * wsize.width, height
+            )
+            context.fill()
+
+class PushSwapHandler:
+    def __init__(self, window: PushSwapVisualizer, instructions: List[str]) -> None:
+        self.window = window
+        self.instructions = instructions
+        if instructions and instructions[-1] == '':
+            instructions.pop()
+
+    def __call__(self) -> bool:
+        if self.instructions:
+            self.do_first_instruction()
+            self.window.canvas.queue_draw()
+            return True
+        else:
+            return False
+
+    @staticmethod
+    def s(type: str, stack_a: List[int], stack_b: List[int]):
+        if type in ["a", "s"] and len(stack_a) > 1:
+            stack_a.insert(0, stack_a.pop(1))
+        if type in ["b", "s"] and len(stack_b) > 1:
+            stack_b.insert(0, stack_b.pop(1))
+
+    @staticmethod
+    def p(type: str, stack_a: List[int], stack_b: List[int]):
+        if type == "a" and len(stack_b) > 0:
+            stack_a.insert(0, stack_b.pop(0))
+        if type == "b" and len(stack_a) > 0:
+            stack_b.insert(0, stack_a.pop(0))
+
+    @staticmethod
+    def r(type: str, stack_a: List[int], stack_b: List[int]):
+        if type in ["a", "r"] and len(stack_a) > 0:
+            stack_a.append(stack_a.pop(0))
+        if type in ["b", "r"] and len(stack_b) > 0:
+            stack_b.append(stack_b.pop(0))
+
+    @staticmethod
+    def rr(type: str, stack_a: List[int], stack_b: List[int]):
+        if type in ["a", "r"] and len(stack_a) > 0:
+            stack_a.insert(0, stack_a.pop())
+        if type in ["b", "r"] and len(stack_b) > 0:
+            stack_b.insert(0, stack_b.pop())
+
+    def do_first_instruction(self):
+        instruction = self.instructions.pop(0)
+        getattr(self, instruction[:-1])(
+            instruction[-1], self.window.stack_a, self.window.stack_b)
+
+def main() -> None:
+    parser = init_argparse()
+    args = parser.parse_args()
+    args.path += "/push_swap"
+
+    stack_a = random.sample(range(-2147483648, 2147483648), args.size)
+    output = subprocess.check_output([args.path] + list(map(str, stack_a)))
+    output = output.decode("ascii")
+
+    window = PushSwapVisualizer(stack_a)
+    window.set_default_size(500,400)
+    window.show_all()
+
+    push_swap_handler = PushSwapHandler(window, output.split("\n"))
+
+    GLib.timeout_add(1, push_swap_handler)
+    Gtk.main()
+
+
+main()
