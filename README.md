@@ -10,6 +10,6 @@ Visualize the execution of your sorting algorithm.<br/>
 - cd push-swap-visualizer
 - ```./visualizer <size>```
 
-More details about parameters at ```visualizer -h```
+More details about arguments at ```visualizer -h```
 
 ![image](https://user-images.githubusercontent.com/57496441/200988011-cc9f1c7d-8254-465b-90c4-997e099eb6d4.png)
