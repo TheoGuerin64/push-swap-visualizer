@@ -7,7 +7,7 @@ Visualize the execution of your push swap algorithm (for 42 push swap project).<
 ## Usage
 - Go to next to your push swap folder
 - ```git clone https://github.com/TheoGuerin64/push-swap-visualizer```
-- cd push-swap-visualizer
+- ```cd push-swap-visualizer```
 - ```./visualizer <size>```
 
 More details about arguments at ```visualizer -h```
