@@ -13,6 +13,3 @@ Visualize the execution of your push swap algorithm (for 42 push swap project).<
 More details about arguments at ```visualizer -h```
 
 ![terminal visualizer -h](https://user-images.githubusercontent.com/57496441/201161242-6dc60cd9-c632-4471-bcab-6c0c4eeeb9e6.png)
-
-
-### More coming soon...
