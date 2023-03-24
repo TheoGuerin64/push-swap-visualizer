@@ -93,6 +93,7 @@ class PushSwapVisualizer(Gtk.Window):
             )
             context.fill()
 
+
 class PushSwapHandler:
     def __init__(self, window: PushSwapVisualizer, instructions: List[str]) -> None:
         self.window = window
@@ -140,6 +141,7 @@ class PushSwapHandler:
         instruction = self.instructions.pop(0)
         getattr(self, instruction[:-1])(
             instruction[-1], self.window.stack_a, self.window.stack_b)
+
 
 def main() -> None:
     parser = init_argparse()
