@@ -1,9 +1,8 @@
 #!/usr/bin/python3
-from typing import List, Optional
+from typing import List
 import subprocess
 import argparse
 import random
-import math
 import cairo
 import gi
 
@@ -25,15 +24,17 @@ def init_argparse() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description="Visualize the execution of your push swap algorithm."
     )
-    parser.add_argument("size", type=size_type, action="store",
+    parser.add_argument(
+        "size", type=size_type, action="store",
         help="number of generated number (must be greater than 0)."
     )
-    parser.add_argument("-p", "--path", type=str, action="store",
-        default="../push_swap",
+    parser.add_argument(
+        "-p", "--path", type=str, action="store", default="../push_swap",
         help="path to push swap folder (default is ../push_swap)."
     )
-    parser.add_argument("-s", "--speed", type=int, action="store",
-        default=10, help="time between each instruction in ms."
+    parser.add_argument(
+        "-s", "--speed", type=int, action="store", default=10,
+        help="time between each instruction in ms."
     )
     return parser
 
@@ -153,7 +154,7 @@ def main() -> None:
     output = output.decode("ascii")
 
     window = PushSwapVisualizer(stack_a)
-    window.set_default_size(500,400)
+    window.set_default_size(500, 400)
     window.show_all()
 
     push_swap_handler = PushSwapHandler(window, output.split("\n"))
